@@ -3,17 +3,8 @@ from bluepy.btle import Scanner, DefaultDelegate
 from clearblade.ClearBladeCore import System,Query, Developer
 
 
-class ScanDelegate(DefaultDelegate):
-	def __init__(self):
-		DefaultDelegate.__init__(self)
-
-	def handleDiscovery(self, dev,isNewDev, isNewData):
-		if isNewDev:
-			print("found a new device",dev.addr)
-		elif isNewData:
-			print('found new data from',dev.addr)
-
-scanner = Scanner().withDelegate(ScanDelegate())
+# get BLE devices in range
+scanner = Scanner()
 devices = scanner.scan(6.0)
 addr_names = []
 for dev in devices:
@@ -26,12 +17,19 @@ for dev in devices:
 		if 'name' in desc.lower() and value:
 			name = value
 
+
 	if name: name = '\tname: "{}"'.format(repr(name))
 
-	output = 'addr: {}{}'.format(addr, name)
-	print(output)
+	msg = 'addr: {}{}'.format(addr, name)
 
+
+
+#send message to Broker
 SystemKey = 'c4dfbc880ce891a09fe8eb92eb9d01'
 SystemSecret = 'C4DFBC880CC0D8A8B5FCE5B4DB44'
+admin_email = 'rtdeamicis@gmail.com'
+admin_pw = 'H1r3m3pls'
 
 mySystem = System(SystemKey, SystemSecret)
+
+admin = mySystem.User(
