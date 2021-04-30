@@ -1,7 +1,5 @@
-import string
 from bluepy.btle import Scanner, DefaultDelegate
-from clearblade.ClearBladeCore import System,Query, Developer
-
+import string
 
 class ScanDelegate(DefaultDelegate):
 	def __init__(self):
@@ -30,8 +28,3 @@ for dev in devices:
 
 	output = 'addr: {}{}'.format(addr, name)
 	print(output)
-
-SystemKey = 'c4dfbc880ce891a09fe8eb92eb9d01'
-SystemSecret = 'C4DFBC880CC0D8A8B5FCE5B4DB44'
-
-mySystem = System(SystemKey, SystemSecret)
