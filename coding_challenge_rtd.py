@@ -9,19 +9,26 @@ from clearblade.ClearBladeCore import System,Query, Developer
 scanner = Scanner()
 devices = scanner.scan(6.0)
 msgs = []
+addrs = []
 for dev in devices:
-	msg = {
-		'addr': dev.addr,
-		'name' : ''
-	}
+	if dev.addr not in addrs:
+		msg={'addr':dev.addr, 'name':''}
+	
+		for (sdtype, desc, value) in dev.getScanData():
+			# remove non-printable characters from value
+			value = filter(lambda x:x in string.printable, value)
+	
+			if 'name' in desc.lower() and value:
+				msg['name'] = value
+		
+		msgs.append(msg)
+	
+	else:
+		print('found duplicate addr')
+		print(addrs)
+		print(dev.addr)
 
-	for (sdtype, desc, value) in dev.getScanData():
-		# remove non-printable characters from value
-		value = filter(lambda x:x in string.printable, value)
-		if 'name' in desc.lower() and value:
-			msg['name'] = value
 
-	msgs.append(msg)
 
 print(json.dumps(msgs, indent=2))
 
