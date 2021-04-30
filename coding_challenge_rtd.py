@@ -23,7 +23,7 @@ for dev in devices:
 
 	msgs.append(msg)
 
-print(msgs)
+print(json.dumps(msgs, indent=2))
 
 #send message to Broker
 SystemKey = 'b2adc7880cc2ba98aaeb8fe3e2e501'
@@ -34,13 +34,13 @@ admin_pw = 'H1r3m3pls'
 mySystem = System(SystemKey, SystemSecret)
 admin = mySystem.User(admin_email, admin_pw)
 
-mqtt = mySystem.Messageing(admin)
+# mqtt = mySystem.Messageing(admin)
 
-mqtt.connect()
+# mqtt.connect()
 
-for msg in msgs:
-	mqtt.publish('BLE',msg)
-	sleep(1)
+# for msg in msgs:
+# 	mqtt.publish('BLE',msg)
+# 	sleep(1)
 
 # import os
 # import datetime
