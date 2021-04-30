@@ -13,25 +13,24 @@ addrs = []
 for dev in devices:
 	if dev.addr not in addrs:
 		addrs.append(dev.addr)
-		msg={'addr':dev.addr, 'name':''}
-	
+		msg={'addr':dev.addr}
+
 		for (sdtype, desc, value) in dev.getScanData():
 			# remove non-printable characters from value
 			value = filter(lambda x:x in string.printable, value)
-	
+
 			if 'name' in desc.lower() and value:
 				msg['name'] = value
-		
+
 		msgs.append(msg)
-	
+
 	else:
 		print('found duplicate addr')
 		print(addrs)
 		print(dev.addr)
 
-
-
-print(json.dumps(msgs, indent=2))
+for msg in msgs:
+	print(json.dumps(msg))
 
 #send message to Broker
 SystemKey = 'b2adc7880cc2ba98aaeb8fe3e2e501'
@@ -42,13 +41,13 @@ admin_pw = 'H1r3m3pls'
 mySystem = System(SystemKey, SystemSecret)
 admin = mySystem.User(admin_email, admin_pw)
 
-# mqtt = mySystem.Messageing(admin)
+mqtt = mySystem.Messaging(admin)
 
-# mqtt.connect()
-
-# for msg in msgs:
-# 	mqtt.publish('BLE',msg)
-# 	sleep(1)
+mqtt.connect()
+for msg in msgs:
+	mqtt.publish('ble/_platform',json.dumps(msg))
+	sleep(1)
+mqtt.disconnect()
 
 # import os
 # import datetime
