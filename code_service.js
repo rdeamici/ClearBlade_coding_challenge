@@ -20,14 +20,16 @@ function bleDevices(req,resp) {
 		resp.error("Body not passed")
 	}
 	var newDevice = JSON.parse(req.params.body)
+    newDevice.date = new Date()
     log("newDevice = "+JSON.stringify(newDevice))
     
-    const collection = "ble_devices"
-    var ble_col = ClearBlade.Collection( {collectionName: collection } );
+    const collection = "de83e2880ca4b886938cfbbbac2c"
+    var ble_col = ClearBlade.Collection( {collectionID: collection } );
     ble_col.create(newDevice, function (err, data) {
             if (err) {
                 resp.error("creation error : " + JSON.stringify(data));
             }
+            log("data added to "+collection+" = "+data)
         })
     resp.success("Successfully added "+JSON.stringify(newDevice)+" to collection " +collection);
 }
