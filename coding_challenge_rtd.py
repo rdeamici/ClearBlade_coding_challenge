@@ -33,8 +33,8 @@ for msg in msgs:
 	print(json.dumps(msg))
 
 #send message to Broker
-SystemKey = 'b2adc7880cc2ba98aaeb8fe3e2e501'
-SystemSecret = 'B2ADC7880CB8C6C4F1D9E380CE9C01'
+SystemKey = 'c4dfbc880ce891a09fe8eb92eb9d01'
+SystemSecret = 'C4DFBC880CC0D8A8B5FCE5B4DB44'
 admin_email = 'rtdeamicis@gmail.com'
 admin_pw = 'H1r3m3pls'
 
@@ -48,9 +48,9 @@ code = mySystem.Service("bleDevices")
 mqtt.connect()
 for msg in msgs:
 	mqtt.publish('ble/_platform',json.dumps(msg))
+#	resp = code.execute(admin)
 	sleep(1)
-	resp = code.execute(admin)
-	print(resp)
+#	print(resp)
 mqtt.disconnect()
 
 # import os
