@@ -1,33 +1,36 @@
 import string
 import json
 from time import sleep
+import sysInfo
+
 from bluepy.btle import Scanner, DefaultDelegate
 from clearblade.ClearBladeCore import System,Query, Developer
 
+def create_msgs():
+    total, available = sysInfo.ram()
+    processes = sysInfo.processes()
+    temp = sysInfo.temp()
+    bles = sysInfo.ble()
+    num_bles = len(bles)
+    system_overview =  {
+        'total ram': total,
+        'available ram': available,
+        'number of running processes':processes,
+        'Device Temperature': temp,
+        'Number of Bluetooth Devices in Range': num_bles
+    }
+    bluetooth_devices = []
+    for ble in bles:
+        msg = {
+            'address': ble['addr']
+        }
 
-# get BLE devices in range
-scanner = Scanner()
-devices = scanner.scan(4.0)
-msgs = []
-addrs = []
-for dev in devices:
-	if dev.addr not in addrs:
-		addrs.append(dev.addr)
-		msg={'address':dev.addr}
+        if 'name' in ble:
+            msg['name'] = ble['name']
 
-		# get device name if it has one
-		for (sdtype, desc, value) in dev.getScanData():
-			# remove non-printable characters from value
-			value = filter(lambda x:x in string.printable, value)
-			if 'name' in desc.lower() and value:
-				msg['name'] = value
+        bluetooth_devices.append(msg)
 
-		msgs.append(msg)
-
-	else:
-		print('found duplicate addr')
-		print(addrs)
-		print(dev.addr)
+    return system_overview, bluetooth_devices
 
 #send message to Broker
 SystemKey = 'c4dfbc880ce891a09fe8eb92eb9d01'
@@ -39,12 +42,16 @@ mySystem = System(SystemKey, SystemSecret)
 admin = mySystem.User(admin_email, admin_pw)
 
 mqtt = mySystem.Messaging(admin)
+sys_overview, bles = create_msgs()
 
 mqtt.connect()
-for msg in msgs:
-	print(json.dumps(msg)) # debug print statement
-	mqtt.publish('ble/_platform',json.dumps(msg))
-#	resp = code.execute(admin)
-	sleep(1)
+
+for ble in bles:
+    print(json.dumps(ble)) # debug print statement
+    mqtt.publish('ble/_platform',json.dumps(ble))
+    sleep(1)
+
+mqtt.publish('sysinfo',json.dumps(sys_overview))
+
 mqtt.disconnect()
 
