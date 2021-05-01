@@ -44,13 +44,12 @@ admin = mySystem.User(admin_email, admin_pw)
 mqtt = mySystem.Messaging(admin)
 
 code = mySystem.Service("bleDevices")
+resp = code.execute(admin)
 
 mqtt.connect()
 for msg in msgs:
 	mqtt.publish('ble/_platform',json.dumps(msg))
 	sleep(1)
-	resp = code.execute(admin)
-	print("resp = ",resp)
 mqtt.disconnect()
 
 # import os
