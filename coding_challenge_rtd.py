@@ -44,7 +44,7 @@ admin = mySystem.User(admin_email, admin_pw)
 mqtt = mySystem.Messaging(admin)
 
 code = mySystem.Service("bleDevices")
-resp = code.execute(admin)
+# resp = code.execute(admin)
 
 mqtt.connect()
 for msg in msgs:
