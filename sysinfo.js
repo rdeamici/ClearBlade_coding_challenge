@@ -29,7 +29,7 @@
             if (err) {
                 resp.error("creation error : " + JSON.stringify(data));
             }
-            log("data added to "+collection+" = "+data)
+            log("data added to "+rPISystemInfoCollection+" = "+data)
         })
     resp.success("Successfully added "+JSON.stringify(sys_info)+" to collection "+rPISystemInfoCollection);
 }
