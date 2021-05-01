@@ -13,7 +13,7 @@ addrs = []
 for dev in devices:
 	if dev.addr not in addrs:
 		addrs.append(dev.addr)
-		msg={'addr':dev.addr}
+		msg={'address':dev.addr}
 
 		# get device name if it has one
 		for (sdtype, desc, value) in dev.getScanData():
