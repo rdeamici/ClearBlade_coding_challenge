@@ -22,7 +22,7 @@ def create_msgs():
     bluetooth_devices = []
     for ble in bles:
         msg = {
-            'address': ble['addr']
+            'address': ble['address']
         }
 
         if 'name' in ble:
