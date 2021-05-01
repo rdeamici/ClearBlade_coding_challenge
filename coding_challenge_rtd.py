@@ -13,11 +13,11 @@ def create_msgs():
     bles = sysInfo.ble()
     num_bles = len(bles)
     system_overview =  {
-        'total ram': total,
-        'available ram': available,
-        'number of running processes':processes,
-        'Device Temperature': temp,
-        'Number of Bluetooth Devices in Range': num_bles
+        'total_ram': total,
+        'available_ram': available,
+        'number_of_running_processes':processes,
+        'device_temperature': temp,
+        'number_ble_in_range': num_bles
     }
     bluetooth_devices = []
     for ble in bles:
