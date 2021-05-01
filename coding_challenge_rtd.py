@@ -50,7 +50,7 @@ for msg in msgs:
 	mqtt.publish('ble/_platform',json.dumps(msg))
 	sleep(1)
 	resp = code.execute(admin)
-	print(resp)
+	print("resp = ",resp)
 mqtt.disconnect()
 
 # import os
