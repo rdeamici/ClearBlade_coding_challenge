@@ -1,7 +1,6 @@
 import subprocess
-import os
 import string
-from bluepy.btle import Scanner, DefaultDelegate
+from bluepy.btle import Scanner
 
 def run_sp(args):
     s = subprocess.check_output(args)
@@ -14,6 +13,7 @@ def ram():
     except:
         print("Error with subprocess in get_ram()")
         exit(1)
+    
     lines = s.split('\n')
     ram = lines[1].split()
     total_ram = int(ram[1])
@@ -56,7 +56,8 @@ def raspberry_model_serial():
         s = run_sp(["egrep", "Model.*:|Serial.*:", "/proc/cpuinfo"])
     except:
         print("Error with subprocess in raspberry_model_serial")
-
+        exit(1)
+        
     s = s.split('\n')
     serial = s[0].split(':')[1].strip()
     model = s[1].split(':')[1].strip()
@@ -66,8 +67,7 @@ def raspberry_model_serial():
 
 # get BLE devices in range
 def ble():
-    scanner = Scanner()
-    devices = scanner.scan(4.0)
+    devices = Scanner().scan(4.0)
     msgs = []
     addrs = []
     for dev in devices:
@@ -82,9 +82,10 @@ def ble():
             msgs.append(msg)
 
         else:
-                print('found duplicate addr')
-                print(addrs)
-                print(dev.addr)
+            print('found duplicate addr')
+            print(addrs)
+            print(dev.addr)
+    
     return msgs
 
 
