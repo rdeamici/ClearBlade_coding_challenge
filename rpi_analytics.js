@@ -15,17 +15,19 @@
  function rpi_analytics(req,resp){
     const ms_per_hour = 3600000
     const TOPIC='analytics'
+    
+    // current timestamp is reporting 7 hours in the future
+    // on the platform. So I removed 7 hours from the current date to ensure
+    // system was working properly for PDT timezone
     var right_now = new Date()-(ms_per_hour*7)
-    log("right_now = "+right_now)
     var prev_hour = new Date(right_now - ms_per_hour)
-    log("prev_hour == "+prev_hour)
-	
+    
     ClearBlade.init({request:req});
     var msg = ClearBlade.Messaging();
     var rpi_query = ClearBlade.Query({collectionName: "rPISystemInfo"})        
     rpi_query.greaterThan("date_time", prev_hour)
     
-    // compute ram usage percentage and percentage increase hour over hour
+    // compute ram usage percentage
     function ram_usage_info(data) {
         var tot_entries_last_hour = data.length
         var total_avail = 0
@@ -47,20 +49,18 @@
     function temp_analytics(data) {
         var highest_temp = 0
         var num_processes = 0
-        
         var total_temp = 0
         var avg_temp = 0
 
         data.forEach(function(entry) {
             if (entry.device_temperature> highest_temp) {
-                highest_temp = +(entry.device_temperature)
+                // convert string to int with +(str)
+		highest_temp = +(entry.device_temperature)
                 num_processes = entry.number_of_running_processes
             }
             total_temp += +(entry.device_temperature)
         })
         avg_temp = Math.ceil(total_temp/data.length)
-        log("avg temp = ")
-        log(avg_temp)
         message = "The highest recorded temperature last hour was "+parseFloat(highest_temp)
         message += "'F. "+parseInt(num_processes)+" processes were running at the time."
         message += " This temp was "+parseInt(highest_temp-avg_temp)+" degrees higher than the average temp of "+parseInt(avg_temp)
@@ -69,8 +69,7 @@
     function ble_device_info(data) {
         rpi_model = data[0].raspberry_model
         rpi_serial = data[0].raspberry_serial_num
-        log(data)
-        log(rpi_serial)
+        
         var ble_devices = ClearBlade.Collection({collectionName: "ble_devices"})
         var ble_query = ClearBlade.Query()
         
@@ -80,15 +79,15 @@
                 resp.error("fetch error : " + JSON.stringify(resp));
             }
             var count = 0
-            count = data.count
+            count = resp.count
             var message = ""
             if (count > 0) {
                 message += parseInt(count)
             } else {
-                message += "No "
+                message += "No"
             }
-            message += "new Bluetooth devices came within range of the "
-            message += rpi_model+" serial number: "+rpi_serial
+            message += " new Bluetooth devices came within range of the '"
+            message += rpi_model+"' serial number: "+rpi_serial
             msg.publish(TOPIC,message)
         })
 
@@ -98,16 +97,14 @@
         if (err) {
             resp.error("fetch error : " + JSON.stringify(resp));
         }
-        log(resp)
         data = resp.DATA
-        log(data)
         
         ram_usage_info(data)
         av_num_processes(data)
         // compute avg temperature, hottest_temperature
         temp_analytics(data)
         // publish a message if new ble devices in range detected
-        ble_device_info(data)
+	ble_device_info(data)
     })
     resp.success("Success");
 }
