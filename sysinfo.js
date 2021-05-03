@@ -17,19 +17,19 @@
     ClearBlade.init({request:req});
 
     if(!req.params.body){
-		resp.error("Body not passed")
-	}
-	var sys_info = JSON.parse(req.params.body)
+        resp.error("Body not passed")
+    }
+    
+    var sys_info = JSON.parse(req.params.body)
     sys_info.date_time = new Date()
     log("sys_info = "+JSON.stringify(sys_info))
 
     const rPISystemInfoCollection = "d8f0ee880cdaf9ead3a8cef69628"
     var sysInfo_col = ClearBlade.Collection( {collectionID: rPISystemInfoCollection } );
     sysInfo_col.create(sys_info, function (err, data) {
-            if (err) {
-                resp.error("creation error : " + JSON.stringify(data));
-            }
-            log("data added to "+rPISystemInfoCollection+" = "+data)
-        })
+        if (err) {
+            resp.error("creation error : " + JSON.stringify(data));
+        }
+    })
     resp.success("Successfully added "+JSON.stringify(sys_info)+" to collection "+rPISystemInfoCollection);
 }
