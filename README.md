@@ -1,5 +1,5 @@
 # ClearBlade_coding_challenge
-coding challenge for clearblade summer internship 2021
+coding challenge for clearblade internship 2021
 
 # Summary
 The challenge was to send system information from a raspberry pi to the ClearBlade platform at regular intervals,
