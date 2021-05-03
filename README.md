@@ -87,6 +87,10 @@ The summaries reported include:
     If this information was computed it would be easier to predict potential issues ahead of time. For example, if the RAM usage is currently at 50%,
     but it increased to that point drastically (in the past hour or day) that would indicate we should get ahead of the issue and detect what caused the jump.
     If the RAM usage has hovered around 50% for weeks or months, that would indicate the device is in a stable configuration and no actions are needed.
+    
+4. security:
+   I am currently storing the User password as a string. This is extremely unsafe.
+   I used a temporary string that I don't use anywhere else so that's a little better, but if this were a live system, we would have to encrypt this data.
 
 ## FINAL COMMENTS
 I had an absolute blast working with this technology. It took me a longer than expected time to wrap my mind around how the system works.
