@@ -66,7 +66,12 @@ The summaries reported include:
     Within the script that stores information in the ble_devices Collection, 
     it would be better first query this Collection with the address of the most recently reported ble device. If the current device is already stored
     in the Collection, we should update the timestamp. This way we can keep track of the last time each device was in range of the raspberry-pi.
-    The current setup stores the time when the ble device was first in range of the r-pi. We should keep track of both timestamps, original time, and most recent time.
+    The current setup stores the time when the ble device was first in range of the r-pi. 
+    
+    We should keep track of both timestamps, original time, and most recent time.
+    
+    another issue I noticed is that it appears some bluetooth device addresses are being created dynamically. This leads to hundreds of "new devices"
+    being reported every hour, which is not accurate. No immediate solution jumps out to me for this issue.
 
 2. extrapolate raspberry pi static information from `rPISystemInformation` Collection: 
     Currently the `rPISystemInformation` Collection includes columns for the raspberry pi model and serial number, as well as the max RAM capacity.
