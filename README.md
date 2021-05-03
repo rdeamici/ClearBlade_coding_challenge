@@ -56,7 +56,7 @@ The summaries reported include:
   2. average number of processes running. This is useful to monitor when the number of processes changes drastically.
   3. temperature information. The highest temp and the average temp is calculated, and the difference between the two is also reported. 
   This is useful for detecting when a machine might be running too hot, so pre-emptive measures can be taken to keep the device from being destroyed.
-  4. new bluetooth device information. This message is indicates which new devices come in range of the r-pi.
+  4. new bluetooth device information. This message indicates how many new devices come in range of the r-pi every hour.
   This information could prove useful for systems where the raspberry pi is regularly communicating with various bluetooth devices as they come in range.
 
 ## areas for improvement
@@ -93,8 +93,8 @@ The summaries reported include:
    I used a temporary string that I don't use anywhere else so that's a little better, but if this were a live system, we would have to encrypt this data.
 
 ## FINAL COMMENTS
-I had an absolute blast working with this technology. It took me a longer than expected time to wrap my mind around how the system works.
-I had to read the documentation over and over and search for other resources like the ClearBlade academy, which proved helpful.
+I had an absolute blast working with this technology. It took me a longer than expected to wrap my mind around how everything works.
+I had to read the documentation over and over and search for other resources like the ClearBlade Academy, which proved helpful.
 I estimate I spent about 7-10 hours researching and reading documentation.
 
 Onced I figured out how everything worked, programming the system was a real joy. I spent more time than I probably should have,
