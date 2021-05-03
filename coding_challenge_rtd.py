@@ -4,25 +4,28 @@ from time import sleep
 import sysInfo
 
 from bluepy.btle import Scanner, DefaultDelegate
-from clearblade.ClearBladeCore import System,Query, Developer
+from clearblade.ClearBladeCore import System, Query, Developer
 
 def create_msgs():
     total, available = sysInfo.ram()
     processes = sysInfo.processes()
     temp = sysInfo.temp()
     bles = sysInfo.ble()
+    model, serial = sysInfo.raspberry_model_serial()
     num_bles = len(bles)
     system_overview =  {
         'total_ram': total,
         'available_ram': available,
         'number_of_running_processes':processes,
         'device_temperature': temp,
-        'number_ble_in_range': num_bles
+        'number_ble_in_range': num_bles,
+        "raspberry_model":model,
+        "raspberry_serial_num":serial
     }
     bluetooth_devices = []
     for ble in bles:
         msg = {
-            'address': ble['addr']
+            'address': ble['address']
         }
 
         if 'name' in ble:
