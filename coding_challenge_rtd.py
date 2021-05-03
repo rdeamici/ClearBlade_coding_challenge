@@ -11,13 +11,16 @@ def create_msgs():
     processes = sysInfo.processes()
     temp = sysInfo.temp()
     bles = sysInfo.ble()
+    model, serial = sysInfo.raspberry_model_serial()
     num_bles = len(bles)
     system_overview =  {
         'total_ram': total,
         'available_ram': available,
         'number_of_running_processes':processes,
         'device_temperature': temp,
-        'number_ble_in_range': num_bles
+        'number_ble_in_range': num_bles,
+        "raspberry_model":model,
+        "raspberry_serial_num":serial
     }
     bluetooth_devices = []
     for ble in bles:
