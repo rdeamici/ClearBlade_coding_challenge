@@ -4,7 +4,7 @@ from time import sleep
 import sysInfo
 
 from bluepy.btle import Scanner, DefaultDelegate
-from clearblade.ClearBladeCore import System,Query, Developer
+from clearblade.ClearBladeCore import System, Query, Developer
 
 def create_msgs():
     total, available = sysInfo.ram()

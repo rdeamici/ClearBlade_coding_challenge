@@ -51,6 +51,14 @@ def get_device_name(dev):
 
     return name
 
+def raspberry_model_serial():
+    try:
+        s = run_sp(["egrep", "Model.*:|Serial.*:", "/proc/cpuinfo"])
+    except:
+        print("Error with subprocess in raspberry_model_serial")
+    serial = s[0].split(':')[1].strip()
+    model = s[1].split(':')[1].strip()
+    return model, serial
 
 
 # get BLE devices in range
@@ -82,7 +90,10 @@ if __name__ == "__main__" :
     num_processes = processes()
     temp = temp()
     bles = ble()
+    model, serial = raspberry_model_serial()
 
+    print("current machine Model = "+model)
+    print("Serial number: "+serial)
     print("total ram =",tot)
     print("available ram =",avail)
     print("number of current processes =",num_processes)
