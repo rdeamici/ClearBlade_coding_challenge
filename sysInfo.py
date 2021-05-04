@@ -1,4 +1,5 @@
 import subprocess
+import logging
 import string
 from bluepy.btle import Scanner
 
@@ -11,9 +12,9 @@ def ram():
     try:
         s = run_sp(["free","-m"])
     except:
-        print("Error with subprocess in get_ram()")
+        logging.debug("Error with subprocess in get_ram()")
         exit(1)
-    
+
     lines = s.split('\n')
     ram = lines[1].split()
     total_ram = int(ram[1])
@@ -25,7 +26,7 @@ def processes():
     try:
         s = run_sp(["ps","-e"])
     except:
-        print("Error with subprocess in get_num_processes")
+        logging.debug("Error with subprocess in get_num_processes")
         exit(1)
 
     return len(s.split("\n"))-1
@@ -35,7 +36,7 @@ def temp():
     try:
         s = run_sp(["vcgencmd","measure_temp"])
     except:
-        print("Error with subprocess in get_temp()")
+        logging.debug("Error with subprocess in get_temp()")
     c = float(s.split("=")[1].split("'")[0])
     f = (c*1.8)+32
     return f
@@ -55,7 +56,7 @@ def raspberry_model_serial():
     try:
         s = run_sp(["egrep", "Model.*:|Serial.*:", "/proc/cpuinfo"])
     except:
-        print("Error with subprocess in raspberry_model_serial")
+        logging.debug("Error with subprocess in raspberry_model_serial")
         exit(1)
         
     s = s.split('\n')
@@ -90,12 +91,14 @@ def ble():
 
 
 if __name__ == "__main__" :
+    logging.basicConfig(filename='clearblade_challenge.log', encoding='utf-8', level=logging.DEBUG)
+    
     tot, avail = ram()
     num_processes = processes()
     temp = temp()
     bles = ble()
     model, serial = raspberry_model_serial()
-
+    
     print("current machine Model = '"+model+"'")
     print("Serial number = '"+serial+"'")
     print("total ram =",tot)

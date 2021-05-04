@@ -1,4 +1,5 @@
 import json
+import logging
 from time import sleep
 import sysInfo
 
@@ -34,11 +35,17 @@ def create_msgs():
             msg['name'] = ble['name']
 
         bluetooth_devices.append(msg)
+    logging.info("created following data:")
+    logging.info("system overview:")
+    logging.info(json.dumps(system_overview))
+    logging.info("bluetooth_devices:")
+    logging.info(json.dumps(bluetooth_devices))
 
     return system_overview, bluetooth_devices
 
 
 def main():
+    logging.basicConfig(filename='clearblade_challenge.log', encoding='utf-8', level=logging.DEBUG)
     #send message to ClearBlade platform
     SystemKey = 'c4dfbc880ce891a09fe8eb92eb9d01'
     SystemSecret = 'C4DFBC880CC0D8A8B5FCE5B4DB44'
